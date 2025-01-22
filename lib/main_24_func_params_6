@@ -6,10 +6,10 @@ void main() {
 }
 
 /*
- * La classe ListJoiner reduida al mínim
- * Ara per operar sempre es fa servir joinLists
- * S'han eliminat els mètodes sumLists i restLists
+ * S'aplica la programació funcional també al children del Column
+ * I s'aprofita per reduir encara més el codi, i donar-li un aspectemés declaratiu
  */
+
 class ListJoiner {
   final List<int> list1;
   final List<int> list2;

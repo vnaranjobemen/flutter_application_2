@@ -47,17 +47,22 @@ class MainApp extends StatelessWidget {
       '😇'
     ];
 
+    ListJoiner listJoiner = ListJoiner(list1, list2);
+    List<String> joinedList = listJoiner.joinLists((a, b) {
+      String emoji = emojiList[Random().nextInt(emojiList.length)];
+      return '$emoji $a-$b';
+    });
+
     return MaterialApp(
       home: Center(
         child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: ListJoiner(list1, list2)
-                .joinLists((a, b) {
-                  String emoji = emojiList[Random().nextInt(emojiList.length)];
-                  return '$emoji $a-$b';
-                })
-                .map((item) => Text('Item: $item'))
-                .toList()),
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Item: ${joinedList[0]}'),
+            Text('Item: ${joinedList[1]}'),
+            Text('Item: ${joinedList[2]}'),
+          ],
+        ),
       ),
     );
   }
