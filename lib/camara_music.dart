@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
+import 'package:camera/camera.dart' as mobile_cams;
+//import 'package:camera_macos/camera_macos.dart' as ios_cam;
 import 'package:audioplayers/audioplayers.dart';
+// import 'dart:io' show Platform;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final cameras = await availableCameras();
+  final cameras = await mobile_cams.availableCameras();
   final firstCamera = cameras.first;
 
   runApp(MyApp(camera: firstCamera));
 }
 
 class MyApp extends StatelessWidget {
-  final CameraDescription camera;
+  final mobile_cams.CameraDescription camera;
 
   const MyApp({super.key, required this.camera});
 
@@ -24,15 +26,15 @@ class MyApp extends StatelessWidget {
 }
 
 class MainPage extends StatefulWidget {
-  final CameraDescription camera;
+  final mobile_cams.CameraDescription camera;
 
   const MainPage({super.key, required this.camera});
 
   @override
-  _MainPageState createState() => _MainPageState();
+  MainPageState createState() => MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
@@ -80,24 +82,24 @@ class _MainPageState extends State<MainPage> {
 }
 
 class CameraScreen extends StatefulWidget {
-  final CameraDescription camera;
+  final mobile_cams.CameraDescription camera;
 
   const CameraScreen({super.key, required this.camera});
 
   @override
-  _CameraScreenState createState() => _CameraScreenState();
+  CameraScreenState createState() => CameraScreenState();
 }
 
-class _CameraScreenState extends State<CameraScreen> {
-  late CameraController _controller;
+class CameraScreenState extends State<CameraScreen> {
+  late mobile_cams.CameraController _controller;
   late Future<void> _initializeControllerFuture;
 
   @override
   void initState() {
     super.initState();
-    _controller = CameraController(
+    _controller = mobile_cams.CameraController(
       widget.camera,
-      ResolutionPreset.high,
+      mobile_cams.ResolutionPreset.high,
     );
     _initializeControllerFuture = _controller.initialize();
   }
@@ -118,7 +120,7 @@ class _CameraScreenState extends State<CameraScreen> {
             future: _initializeControllerFuture,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
-                return CameraPreview(_controller);
+                return mobile_cams.CameraPreview(_controller);
               } else {
                 return const Center(child: CircularProgressIndicator());
               }
@@ -181,10 +183,10 @@ class MusicPlayerScreen extends StatefulWidget {
   const MusicPlayerScreen({super.key});
 
   @override
-  _MusicPlayerScreenState createState() => _MusicPlayerScreenState();
+  MusicPlayerScreenState createState() => MusicPlayerScreenState();
 }
 
-class _MusicPlayerScreenState extends State<MusicPlayerScreen> {
+class MusicPlayerScreenState extends State<MusicPlayerScreen> {
   final AudioPlayer _audioPlayer = AudioPlayer();
   bool _isPlaying = false;
 

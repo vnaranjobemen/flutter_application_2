@@ -24,7 +24,7 @@ class PantallaInicial extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _controller = TextEditingController();
+    final TextEditingController controller = TextEditingController();
 
     return Scaffold(
       appBar: AppBar(
@@ -37,7 +37,7 @@ class PantallaInicial extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextField(
-              controller: _controller,
+              controller: controller,
               decoration: const InputDecoration(
                 labelText: 'Enter text',
                 border: OutlineInputBorder(),
@@ -49,8 +49,7 @@ class PantallaInicial extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        SegonaPantalla(text: _controller.text),
+                    builder: (context) => SegonaPantalla(text: controller.text),
                   ),
                 );
               },
