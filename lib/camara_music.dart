@@ -92,7 +92,8 @@ class CameraScreen extends StatefulWidget {
 
 class CameraScreenState extends State<CameraScreen> {
   late mobile_cams.CameraController _controller;
-  late Future<void> _initializeControllerFuture;
+  late Future<void>
+      _initializeControllerFuture; //Para cargar contenido de forma asíncrona
 
   @override
   void initState() {
@@ -115,8 +116,10 @@ class CameraScreenState extends State<CameraScreen> {
     return Column(
       children: [
         Expanded(
-          flex: 3,
+          //para que ocupe todo el espacio disponible del Column
+          flex: 3, //Ocupará 3/4 del espacio disponible
           child: FutureBuilder<void>(
+            //Para cargar contenido de forma asíncrona
             future: _initializeControllerFuture,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
@@ -128,28 +131,30 @@ class CameraScreenState extends State<CameraScreen> {
           ),
         ),
         Expanded(
-          flex: 1,
+          flex: 1, //Ocupará el otro 1/4 del espacio disponible
           child: Center(
             child: ElevatedButton(
               onPressed: () async {
                 try {
                   await _initializeControllerFuture;
                   final image = await _controller.takePicture();
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Photo Taken'),
-                      content: Text('Photo saved at ${image.path}'),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: const Text('OK'),
-                        ),
-                      ],
-                    ),
-                  );
+                  if (context.mounted) {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Photo Taken'),
+                        content: Text('Photo saved at ${image.path}'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
                 } catch (e) {
                   print(e);
                 }
