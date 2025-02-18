@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart' as mobile_cams;
-//import 'package:camera_macos/camera_macos.dart' as ios_cam;
+import 'package:cross_file/cross_file.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:path_provider/path_provider.dart' as prov;
+import 'dart:io' as io;
 // import 'dart:io' show Platform;
 
 void main() async {
@@ -138,12 +140,22 @@ class CameraScreenState extends State<CameraScreen> {
                 try {
                   await _initializeControllerFuture;
                   final image = await _controller.takePicture();
+                  final XFile xFile = XFile(image.path);
+                  final bytes = await xFile.readAsBytes();
+
+                  // Get the temporary directory
+                  final directory = await prov.getExternalStorageDirectory();
+                  final String newPath = '${directory?.path}/image.jpg';
+                  final io.File newImage = io.File(newPath);
+                  await newImage.writeAsBytes(bytes);
+
                   if (context.mounted) {
                     showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
                         title: const Text('Photo Taken'),
-                        content: Text('Photo saved at ${image.path}'),
+                        content: Text(
+                            'Photo saved at $newPath with ${bytes.length} bytes'),
                         actions: [
                           TextButton(
                             onPressed: () {
@@ -198,10 +210,9 @@ class MusicPlayerScreenState extends State<MusicPlayerScreen> {
   void _togglePlayPause() async {
     if (_isPlaying) {
       await _audioPlayer.pause();
+    } else {
+      await _audioPlayer.play(AssetSource('musica.mp3'));
     }
-    // else {
-    //  await _audioPlayer.play(AssetSource('assets/musica.mp3'));
-    //}
     setState(() {
       _isPlaying = !_isPlaying;
     });

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MainApp());
-}
+import 'package:camera/camera.dart' as mobile_cams;
+//import 'package:camera_macos/camera_macos.dart' as ios_cam;
+import 'package:flutter_application_2/camara_music.dart';
+// import 'dart:io' show Platform;
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final cameras = await mobile_cams.availableCameras();
+  final firstCamera = cameras.first;
 
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(home: Text('Hello world'));
-  }
+  runApp(MyApp(camera: firstCamera));
 }
