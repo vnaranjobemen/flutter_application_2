@@ -15,25 +15,12 @@ class _TShirtCalculatorScreenState extends State<TShirtCalculatorScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(
-            width: 200, // Set the desired width
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey), // Add border
-              borderRadius:
-                  BorderRadius.circular(8), // Optional: Add border radius
-            ),
-            child: TextField(
-              decoration: const InputDecoration(
-                labelText: 'Samarretes',
-                hintText: 'Número de samarretes',
-                border: InputBorder.none, // Remove default border
-                contentPadding:
-                    EdgeInsets.all(8), // Add padding inside the border
-              ),
-              keyboardType: TextInputType.number,
-            ),
-          ),
           const SizedBox(height: 20),
+          MyTextInput(
+            labelText: 'Samarretes',
+            hintText: 'Número de samarretes',
+            keyboardType: TextInputType.number,
+          ),
           const Text('Talla'),
           RadioListTile(
             title: const Text('Petita (7,9 €)'),
@@ -75,6 +62,39 @@ class _TShirtCalculatorScreenState extends State<TShirtCalculatorScreen> {
             style: TextStyle(fontSize: 32),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class MyTextInput extends StatelessWidget {
+  final String labelText;
+  final String hintText;
+  final TextInputType keyboardType;
+
+  const MyTextInput({
+    super.key,
+    required this.labelText,
+    required this.hintText,
+    required this.keyboardType,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 200, // Set the desired width
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey), // Add border
+        borderRadius: BorderRadius.circular(8), // Optional: Add border radius
+      ),
+      child: TextField(
+        decoration: InputDecoration(
+          labelText: labelText,
+          hintText: hintText,
+          border: InputBorder.none, // Remove default border
+          contentPadding: EdgeInsets.all(8), // Add padding inside the border
+        ),
+        keyboardType: keyboardType,
       ),
     );
   }
