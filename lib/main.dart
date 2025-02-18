@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'package:camera/camera.dart' as mobile_cams;
-//import 'package:camera_macos/camera_macos.dart' as ios_cam;
-import 'package:flutter_application_2/camara_music.dart';
-// import 'dart:io' show Platform;
+import 'package:flutter_application_2/cat/bemen3/m7/camera/camara_music.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
