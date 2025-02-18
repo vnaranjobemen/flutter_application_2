@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/cat/bemen3/m7/camera/business/t_shirt_calculator_logic.dart';
 
 class TShirtCalculatorScreen extends StatefulWidget {
   const TShirtCalculatorScreen({super.key});
@@ -8,6 +9,35 @@ class TShirtCalculatorScreen extends StatefulWidget {
 }
 
 class _TShirtCalculatorScreenState extends State<TShirtCalculatorScreen> {
+  static const double smallPrice = TShirtCalculatorLogic.small;
+  static const double mediumPrice = TShirtCalculatorLogic.medium;
+  static const double largePrice = TShirtCalculatorLogic.large;
+
+  int? _numTShirts;
+  String? _size;
+  String? _offer;
+  double _price = 0.0;
+
+  void _calculatePrice() {
+    if (_numTShirts == null || _size == null) {
+      setState(() {
+        _price = 0.0;
+      });
+      return;
+    }
+
+    if (_offer == null) {
+      setState(() {
+        _price = TShirtCalculatorLogic.calculatePrice(_size!, _numTShirts!);
+      });
+    } else {
+      setState(() {
+        _price = TShirtCalculatorLogic.calculatePriceWithDiscount(
+            _size!, _numTShirts!, _offer!);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -20,46 +50,77 @@ class _TShirtCalculatorScreenState extends State<TShirtCalculatorScreen> {
             labelText: 'Samarretes',
             hintText: 'Número de samarretes',
             keyboardType: TextInputType.number,
+            onChanged: (value) {
+              setState(() {
+                _numTShirts = int.tryParse(value);
+                _calculatePrice();
+              });
+            },
           ),
           const Text('Talla'),
           RadioListTile(
-            title: const Text('Petita (7,9 €)'),
+            title: Text('Petita ($smallPrice €)'),
             value: 'small',
-            groupValue: null,
-            onChanged: (value) {},
+            groupValue: _size,
+            onChanged: (value) {
+              setState(() {
+                _size = value as String?;
+                _calculatePrice();
+              });
+            },
           ),
           RadioListTile(
-            title: const Text('Mitjana (8,3 €)'),
+            title: Text('Mitjana ($mediumPrice €)'),
             value: 'medium',
-            groupValue: null,
-            onChanged: (value) {},
+            groupValue: _size,
+            onChanged: (value) {
+              setState(() {
+                _size = value as String?;
+                _calculatePrice();
+              });
+            },
           ),
           RadioListTile(
-            title: const Text('Gran (12,7 €)'),
+            title: Text('Gran ($largePrice €)'),
             value: 'large',
-            groupValue: null,
-            onChanged: (value) {},
+            groupValue: _size,
+            onChanged: (value) {
+              setState(() {
+                _size = value as String?;
+                _calculatePrice();
+              });
+            },
           ),
           const SizedBox(height: 20),
           const Text('Oferta'),
           DropdownButton<String>(
+            value: _offer,
             items: const [
+              DropdownMenuItem(
+                value: null,
+                child: Text('Sense desompte'),
+              ),
               DropdownMenuItem(
                 value: '10%',
                 child: Text('Descompte del 10%'),
               ),
               DropdownMenuItem(
-                value: 'quantity',
+                value: '20€',
                 child: Text('Descompte per quantitat'),
               ),
             ],
-            onChanged: (value) {},
+            onChanged: (value) {
+              setState(() {
+                _offer = value;
+                _calculatePrice();
+              });
+            },
             hint: const Text('Selecciona una oferta'),
           ),
           const SizedBox(height: 20),
-          const Text(
-            'Precio: 0.0 €',
-            style: TextStyle(fontSize: 32),
+          Text(
+            'Precio: $_price €',
+            style: const TextStyle(fontSize: 32),
           ),
         ],
       ),
@@ -71,12 +132,14 @@ class MyTextInput extends StatelessWidget {
   final String labelText;
   final String hintText;
   final TextInputType keyboardType;
+  final Function(String) onChanged;
 
   const MyTextInput({
     super.key,
     required this.labelText,
     required this.hintText,
     required this.keyboardType,
+    required this.onChanged,
   });
 
   @override
@@ -95,6 +158,7 @@ class MyTextInput extends StatelessWidget {
           contentPadding: EdgeInsets.all(8), // Add padding inside the border
         ),
         keyboardType: keyboardType,
+        onChanged: onChanged,
       ),
     );
   }

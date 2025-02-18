@@ -1,8 +1,12 @@
 class TShirtCalculatorLogic {
+  static const double small = 7.9;
+  static const double medium = 8.3;
+  static const double large = 12.7;
+
   static const Map<String, double> prices = {
-    'small': 7.9,
-    'medium': 8.3,
-    'large': 12.7,
+    'small': small,
+    'medium': medium,
+    'large': large,
   };
 
   static double calculatePrice(String size, int quantity) {
