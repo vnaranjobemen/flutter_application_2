@@ -3,6 +3,7 @@ import 'package:camera/camera.dart';
 import 'camera_screen.dart';
 import 'picture_screen.dart';
 import 'music_player_screen.dart';
+import 't_shirt_calculator_sceen.dart';
 
 class MainPage extends StatefulWidget {
   final CameraDescription camera;
@@ -30,13 +31,17 @@ class _MainPageState extends State<MainPage> {
             ? 'Càmera'
             : _selectedIndex == 1
                 ? 'Picture'
-                : 'Music Player'),
+                : _selectedIndex == 2
+                    ? 'Music Player'
+                    : 'Calculadora de samarretes'),
       ),
       body: _selectedIndex == 0
           ? CameraScreen(camera: widget.camera)
           : _selectedIndex == 1
               ? const PictureScreen()
-              : const MusicPlayerScreen(),
+              : _selectedIndex == 2
+                  ? const MusicPlayerScreen()
+                  : const TShirtCalculatorScreen(),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -50,6 +55,10 @@ class _MainPageState extends State<MainPage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.music_note),
             label: 'Music',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart),
+            label: 'T-Shirts',
           ),
         ],
         currentIndex: _selectedIndex,
