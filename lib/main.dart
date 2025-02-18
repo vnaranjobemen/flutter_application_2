@@ -7,5 +7,11 @@ void main() async {
   final cameras = await mobile_cams.availableCameras();
   final firstCamera = cameras.first;
 
-  runApp(CameraApp(camera: firstCamera));
+  runApp(
+    SizedBox(
+      width: 390,
+      height: 844,
+      child: CameraApp(camera: firstCamera),
+    ),
+  );
 }
