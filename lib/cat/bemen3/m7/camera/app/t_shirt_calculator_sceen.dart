@@ -118,9 +118,14 @@ class _TShirtCalculatorScreenState extends State<TShirtCalculatorScreen> {
             hint: const Text('Selecciona una oferta'),
           ),
           const SizedBox(height: 20),
-          Text(
-            'Precio: $_price €',
-            style: const TextStyle(fontSize: 32),
+          Row(
+            children: [
+              Text(
+                'Preu: $_price €',
+                style: const TextStyle(fontSize: 32),
+              ),
+              //TODO Aquí iría otro children con el texto de alerta en casode que descuento por cantidad
+            ],
           ),
         ],
       ),
